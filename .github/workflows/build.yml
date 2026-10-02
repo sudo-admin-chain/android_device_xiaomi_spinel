@@ -59,17 +59,12 @@ jobs:
         cd sync
         ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
 
-    - name: Add OrangeFox vendor repos
+    - name: Clean recovery project state
       run: |
-        mkdir -p ~/fox_12.1/.repo/local_manifests
-        cat > ~/fox_12.1/.repo/local_manifests/orangefox.xml << 'EOF'
-        <?xml version="1.0" encoding="UTF-8"?>
-        <manifest>
-          <remote name="fox" fetch="https://gitlab.com/OrangeFox/" />
-          <project name="vendor_fox" path="vendor/fox" remote="fox" revision="fox_12.1" />
-        </manifest>
-        EOF
         cd ~/fox_12.1
+        rm -rf bootable/recovery
+        rm -rf .repo/projects/bootable/recovery.git
+        rm -rf .repo/project-objects/android_bootable_recovery.git
         repo sync -j2 --force-sync
 
     - name: Copy Device Tree & Build Recovery
