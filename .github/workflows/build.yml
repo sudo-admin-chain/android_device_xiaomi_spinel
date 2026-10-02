@@ -51,18 +51,13 @@ jobs:
         mkdir -p ~/OrangeFox_sync && cd ~/OrangeFox_sync
         git clone https://gitlab.com/OrangeFox/sync.git
         cd sync
-        ./orangefox_sync.sh --branch fox_12.1 --path ~/fox_12.1
+        bash ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
 
-    - name: Verify vendor tree and create symlink
+    - name: Create vendor/fox symlink
       run: |
-        cd ~/fox_12.1
-        ls vendor/ || true
-        ls | grep -i recovery || true
-        if [ -d "vendor/recovery" ]; then
-          ln -sf recovery vendor/fox
-        elif [ -d "recovery" ]; then
-          ln -sf ../recovery vendor/fox
-        fi
+        cd ~/fox_12.1/vendor
+        ln -sf recovery fox
+        ls -la
 
     - name: Copy Device Tree
       run: |
