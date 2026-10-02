@@ -59,6 +59,20 @@ jobs:
         cd sync
         ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
 
+    - name: Add OrangeFox vendor repos
+      run: |
+        mkdir -p ~/fox_12.1/.repo/local_manifests
+        cat > ~/fox_12.1/.repo/local_manifests/orangefox.xml << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <manifest>
+          <remote name="fox" fetch="https://gitlab.com/OrangeFox/" />
+          <project name="vendor_fox" path="vendor/fox" remote="fox" revision="fox_12.1" />
+          <project name="vendor_twrp" path="vendor/twrp" remote="fox" revision="fox_12.1" />
+        </manifest>
+        EOF
+        cd ~/fox_12.1
+        repo sync -j2 --force-sync
+
     - name: Copy Device Tree & Build Recovery
       shell: /usr/bin/bash {0}
       run: |
@@ -99,4 +113,3 @@ jobs:
           /home/runner/fox_12.1/out/target/product/spinel/OrangeFox*.img
           /home/runner/fox_12.1/out/target/product/spinel/OrangeFox*.zip
           /home/runner/fox_12.1/out/target/product/spinel/recovery.img
-          
