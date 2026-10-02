@@ -67,7 +67,6 @@ jobs:
         <manifest>
           <remote name="fox" fetch="https://gitlab.com/OrangeFox/" />
           <project name="vendor_fox" path="vendor/fox" remote="fox" revision="fox_12.1" />
-          <project name="vendor_twrp" path="vendor/twrp" remote="fox" revision="fox_12.1" />
         </manifest>
         EOF
         cd ~/fox_12.1
