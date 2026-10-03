@@ -8,7 +8,7 @@
 # -----------------------------------------------------------------
 export ALLOW_MISSING_DEPENDENCIES=true
 export FOX_BUILD_DEVICE="spinel"
-export FOX_VERSION="R12.1"
+export FOX_MAINTAINER_PATCH_VERSION=1
 export FOX_BUILD_TYPE="Unofficial"
 export OF_MAINTAINER="yxqo41"
 export LC_ALL="C"
