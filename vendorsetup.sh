@@ -16,8 +16,8 @@ export LC_ALL="C"
 # -----------------------------------------------------------------
 # 2. HARDWARE, PARTITION & VIRTUAL A/B ENGINE
 # -----------------------------------------------------------------
-export FOX_VIRTUAL_AB_DEVICE=1
-export OF_AB_DEVICE=1
+#export FOX_VIRTUAL_AB_DEVICE=1
+#export OF_AB_DEVICE=1
 export BOARD_HAS_NO_REAL_SDCARD=0
 export OF_SUPPORT_ALL_BLOCKES=1
 export OF_DYNAMIC_FULL_SIZE=9126805504
@@ -36,12 +36,12 @@ export OF_RUN_POST_FORMAT_PROCESS=1
 # -----------------------------------------------------------------
 # 4. FLASHING ENGINE, OTA & HYPEROS SURVIVAL
 # -----------------------------------------------------------------
-export OF_DISABLE_MIUI_OTA_BY_DEFAULT=0
-export OF_FIX_OTA_UPDATE_MANUAL_FLASH=1
+#export OF_DISABLE_MIUI_OTA_BY_DEFAULT=0
+#export OF_FIX_OTA_UPDATE_MANUAL_FLASH=1
 export OF_NO_TREBLE_COMPATIBILITY_CHECK=1
-export OF_USE_MAGISKBOOT=1
-export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
-export OF_PATCH_AVB20=1
+#export OF_USE_MAGISKBOOT=1
+#export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
+#export OF_PATCH_AVB20=1
 export OF_DONT_PATCH_ON_FRESH_INSTALLATION=0
 export OF_SUPPORT_VBMETA_AVB2_PATCHING=1
 
