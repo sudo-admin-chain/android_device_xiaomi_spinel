@@ -82,6 +82,14 @@ jobs:
             df -h / /home/runner
             echo "--- TOP MEMORY ---"
             ps -eo pid,ppid,%mem,%cpu,rss,stat,comm --sort=-rss | head -15
+            echo "=== SOONG ENV ==="
+            env | grep -E 'SOONG|NINJA|ANDROID|JOBS|RBE' | sort
+
+            echo "=== SOONG PROCESS ==="
+            pgrep -a soong_build || true
+
+            echo "=== PROCESS LIMITS ==="
+            cat /proc/$(pgrep -o soong_build)/status 2>/dev/null || true
             sleep 10
           done
         ) &
@@ -97,6 +105,8 @@ jobs:
         export LC_ALL="C"
         export TARGET_SCREEN_WIDTH=1080
         export TARGET_SCREEN_HEIGHT=2400
+        export SOONG_UI_NINJA_ARGS="-j1"
+        export NINJA_ARGS="-j1"
 
         source build/envsetup.sh
         lunch fox_spinel-bp2a-eng
