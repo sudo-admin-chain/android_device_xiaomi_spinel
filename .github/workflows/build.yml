@@ -71,43 +71,43 @@ jobs:
       run: |
         (
           while true; do
-              echo
-              echo "===== RESOURCE CHECK $(date) ====="
-              free -h
-              echo "--- SWAP ---"
-              swapon --show
-              echo "--- LOAD ---"
-              uptime
-              echo "--- DISK ---"
-              df -h / /home/runner
-              echo "--- TOP MEMORY ---"
-              ps -eo pid,ppid,%mem,%cpu,rss,stat,comm --sort=-rss | head -15
-              sleep 10
+            echo
+            echo "===== RESOURCE CHECK $(date) ====="
+            free -h
+            echo "--- SWAP ---"
+            swapon --show
+            echo "--- LOAD ---"
+            uptime
+            echo "--- DISK ---"
+            df -h / /home/runner
+            echo "--- TOP MEMORY ---"
+            ps -eo pid,ppid,%mem,%cpu,rss,stat,comm --sort=-rss | head -15
+            sleep 10
           done
-      ) &
-      MONITOR_PID=$!
-      
-      trap 'kill "$MONITOR_PID" 2>/dev/null || true' EXIT
-      
-      cd ~/fox
-      
-      export ALLOW_MISSING_DEPENDENCIES=true
-      export FOX_BUILD_TYPE="Unofficial"
-      export FOX_BUILD_DEVICE="spinel"
-      export LC_ALL="C"
-      export TARGET_SCREEN_WIDTH=1080
-      export TARGET_SCREEN_HEIGHT=2400
+        ) &
+        MONITOR_PID=$!
 
-      source build/envsetup.sh
-      lunch fox_spinel-bp2a-eng
-      
-      echo "===== BEFORE MKA ====="
-      nproc
-      free -h
-      swapon --show
-      df -h
-      
-      mka vendorbootimage -j1
+        trap 'kill "$MONITOR_PID" 2>/dev/null || true' EXIT
+
+        cd ~/fox
+
+        export ALLOW_MISSING_DEPENDENCIES=true
+        export FOX_BUILD_TYPE="Unofficial"
+        export FOX_BUILD_DEVICE="spinel"
+        export LC_ALL="C"
+        export TARGET_SCREEN_WIDTH=1080
+        export TARGET_SCREEN_HEIGHT=2400
+
+        source build/envsetup.sh
+        lunch fox_spinel-bp2a-eng
+
+        echo "===== BEFORE MKA ====="
+        nproc
+        free -h
+        swapon --show
+        df -h
+
+        mka vendorbootimage -j1
 
     - name: Upload Recovery Artifacts
       uses: actions/upload-artifact@v4
