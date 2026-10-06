@@ -74,6 +74,8 @@ jobs:
         export FOX_BUILD_TYPE="Unofficial"
         export FOX_BUILD_DEVICE="spinel"
         export LC_ALL="C"
+        export TARGET_SCREEN_WIDTH=1080
+        export TARGET_SCREEN_HEIGHT=2400
 
         source build/envsetup.sh
         lunch fox_spinel-bp2a-eng
