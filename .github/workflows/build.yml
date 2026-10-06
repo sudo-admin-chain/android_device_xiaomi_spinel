@@ -18,7 +18,7 @@ jobs:
       run: |
         sudo swapoff -a || true
         sudo rm -f /swapfile
-        sudo fallocate -l 4G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+        sudo fallocate -l 8G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
         sudo chmod 600 /swapfile
         sudo mkswap /swapfile
         sudo swapon /swapfile
@@ -69,6 +69,20 @@ jobs:
 
     - name: Build Recovery
       run: |
+        (
+          while true; do
+            echo "===== $(date) ====="
+            free -h
+            echo "--- SWAP ---"
+            swapon --show
+            echo "--- OOM ---"
+            sudo dmesg -T | grep -Ei 'oom|out of memory|killed process|memory cgroup' | tail -20 || true
+            sleep 5
+        done
+        ) > /tmp/resource-monitor.log 2>&1 &
+
+        MONITOR_PID=$!
+
         cd ~/fox
         export ALLOW_MISSING_DEPENDENCIES=true
         export FOX_BUILD_TYPE="Unofficial"
@@ -80,6 +94,15 @@ jobs:
         source build/envsetup.sh
         lunch fox_spinel-bp2a-eng
         mka vendorbootimage -j2
+
+        kill "$MONITOR_PID" || true
+
+    - name: Upload Resource Diagnostics
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: resource-diagnostics
+        path: /tmp/resource-monitor.log
 
     - name: Upload Recovery Artifacts
       uses: actions/upload-artifact@v4
