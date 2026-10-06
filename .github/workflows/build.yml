@@ -76,7 +76,7 @@ jobs:
         export LC_ALL="C"
 
         source build/envsetup.sh
-        lunch fox_spinel-eng
+        lunch fox_spinel-bp2a-eng
         mka vendorbootimage -j2
 
     - name: Upload Recovery Artifacts
