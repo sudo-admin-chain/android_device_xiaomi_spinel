@@ -1,17 +1,25 @@
-# Mount point    fstype    device                                  flags
-/boot            emmc      /dev/block/by-name/boot                 flags=display="Boot";backup=1;flashimg=1
-/vendor_boot     emmc      /dev/block/by-name/vendor_boot          flags=display="Vendor Boot";backup=1;flashimg=1
-/recovery        emmc      /dev/block/by-name/recovery             flags=display="Recovery";backup=1;flashimg=1
-/cache           ext4      /dev/block/by-name/cache                 flags=display="Cache"
-/data            f2fs      /dev/block/by-name/userdata              flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0;metadata_encryption=aes-256-xts;keydirectory=/metadata/vold/metadata_encryption
-/metadata        ext4      /dev/block/by-name/metadata              flags=display="Metadata";backup=1
-/misc            emmc      /dev/block/by-name/misc                 flags=display="Misc"
+# Dynamic partitions
+system      /system      ext4    ro,barrier=1                 wait,logical,first_stage_mount
+system_ext  /system_ext  ext4    ro,barrier=1                 wait,logical,first_stage_mount
+vendor      /vendor      ext4    ro,barrier=1                 wait,logical,first_stage_mount
+product     /product     ext4    ro,barrier=1                 wait,logical,first_stage_mount
 
-# Dynamic Partitions
-/system_image    emmc      system                                  flags=display="System Image";backup=1;flashimg=1
-/vendor_image    emmc      vendor                                  flags=display="Vendor Image";backup=1;flashimg=1
-/product_image   emmc      product                                 flags=display="Product Image";backup=1;flashimg=1
+# Metadata
+/dev/block/by-name/metadata    /metadata    ext4    noatime,nosuid,nodev,discard    wait,check,formattable
 
-# External Storage (SD Card & USB-OTG)
-/external_sd     vfat      /dev/block/mmcblk0p1 /dev/block/mmcblk0 flags=display="MicroSD";storage;wipeingui;removable
-/usb_otg         vfat      /dev/block/sdb1      /dev/block/sdb     flags=display="USB-OTG";storage;wipeingui;removable
+# Userdata
+/dev/block/by-name/userdata    /data        f2fs    noatime,nosuid,nodev,discard,inlinecrypt    wait,check,formattable,quota,latemount
+
+# Rescue partition is mounted by stock recovery as /cache
+/dev/block/by-name/rescue      /cache       ext4    noatime,nosuid,nodev,discard    wait,check,formattable
+
+# Physical boot-related partitions
+/dev/block/by-name/boot        /boot        emmc    defaults    slotselect
+/dev/block/by-name/vendor_boot /vendor_boot emmc    defaults    slotselect
+/dev/block/by-name/dtbo        /dtbo        emmc    defaults    slotselect
+/dev/block/by-name/vbmeta      /vbmeta      emmc    defaults    slotselect
+/dev/block/by-name/vbmeta_system /vbmeta_system emmc defaults  slotselect
+/dev/block/by-name/vbmeta_vendor /vbmeta_vendor emmc defaults  slotselect
+
+# Misc
+/dev/block/by-name/misc        /misc        emmc    defaults
