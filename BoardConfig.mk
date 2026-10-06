@@ -1,7 +1,9 @@
 DEVICE_PATH := device/xiaomi/spinel
 
+# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
 
 TARGET_BOARD_PLATFORM := mt6789
 TARGET_BOOTLOADER_BOARD_NAME := mt6789
