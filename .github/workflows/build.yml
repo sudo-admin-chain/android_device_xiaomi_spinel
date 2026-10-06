@@ -93,7 +93,8 @@ jobs:
 
         source build/envsetup.sh
         lunch fox_spinel-bp2a-eng
-        mka vendorbootimage -j2
+        trap 'kill "$MONITOR_PID" 2>/dev/null || true' EXIT
+        mka vendorbootimage -j1
 
         kill "$MONITOR_PID" || true
 
