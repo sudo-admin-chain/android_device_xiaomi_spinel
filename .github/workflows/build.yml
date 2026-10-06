@@ -42,16 +42,24 @@ jobs:
         chmod a+x ~/bin/repo
         echo "$HOME/bin" >> $GITHUB_PATH
 
-    - name: Sync OrangeFox Source
+    - name: Initialize OrangeFox 16.0
       run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git config --global url."https://gitlab.com/".insteadOf "git@gitlab.com:"
-        
-        mkdir -p ~/OrangeFox_sync && cd ~/OrangeFox_sync
-        git clone https://gitlab.com/OrangeFox/sync.git
-        cd sync
-        bash ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
+        mkdir -p ~/fox
+        cd ~/fox
+        repo init \
+          -u https://gitlab.com/OrangeFox/Manifest.git \
+          -b fox_16.0 \
+          --depth=1
+
+    - name: Sync OrangeFox 16.0
+      run: |
+        cd ~/fox
+        repo sync \
+          --force-sync \
+          --no-clone-bundle \
+          --no-tags \
+          --optimized-fetch \
+          -j2
 
     - name: Create vendor/fox symlink
       run: |
