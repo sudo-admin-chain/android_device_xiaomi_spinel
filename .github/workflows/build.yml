@@ -61,36 +61,29 @@ jobs:
           --optimized-fetch \
           -j2
 
-    - name: Create vendor/fox symlink
-      run: |
-        cd ~/fox_12.1/vendor
-        ln -sf recovery fox
-        ls -la
-
     - name: Copy Device Tree
       run: |
-        mkdir -p ~/fox_12.1/device/xiaomi/spinel
+        mkdir -p ~/fox/device/xiaomi/spinel
         rsync -a --exclude='.git' --exclude='.github' --exclude='README.md' \
-          $GITHUB_WORKSPACE/ ~/fox_12.1/device/xiaomi/spinel/
+          "$GITHUB_WORKSPACE/" ~/fox/device/xiaomi/spinel/
 
     - name: Build Recovery
       run: |
-        cd ~/fox_12.1
+        cd ~/fox
         export ALLOW_MISSING_DEPENDENCIES=true
         export FOX_BUILD_TYPE="Unofficial"
+        export FOX_BUILD_DEVICE="spinel"
         export LC_ALL="C"
-        export TARGET_SCREEN_WIDTH=1080
-        export TARGET_SCREEN_HEIGHT=2400
-        
+
         source build/envsetup.sh
         lunch fox_spinel-eng
-        mka recoveryimage -j2
+        mka vendorbootimage -j2
 
     - name: Upload Recovery Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: OrangeFox-spinel-Build
         path: |
-          /home/runner/fox_12.1/out/target/product/spinel/OrangeFox*.img
-          /home/runner/fox_12.1/out/target/product/spinel/OrangeFox*.zip
-          /home/runner/fox_12.1/out/target/product/spinel/recovery.img
+          /home/runner/fox/out/target/product/spinel/OrangeFox*.img
+          /home/runner/fox/out/target/product/spinel/OrangeFox*.zip
+          /home/runner/fox/out/target/product/spinel/vendor_boot.img
